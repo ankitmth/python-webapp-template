@@ -12,7 +12,9 @@ COPY ./gunicorn_conf.py /gunicorn_conf.py
 COPY ./start-reload.sh /start-reload.sh
 RUN chmod +x /start-reload.sh
 
+RUN pip install --no-cache-dir fastapi
 COPY ./app /app
+
 WORKDIR /app/
 
 ENV PYTHONPATH=/app
