@@ -1,24 +1,13 @@
 import sys
 
+from fastapi import FastAPI
 
-class App:
-    def __init__(self, scope):
-        assert scope["type"] == "http"
-        self.scope = scope
+version = f"{sys.version_info.major}.{sys.version_info.minor}"
 
-    async def __call__(self, receive, send):
-        await send(
-            {
-                "type": "http.response.start",
-                "status": 200,
-                "headers": [[b"content-type", b"text/plain"]],
-            }
-        )
-        version = f"{sys.version_info.major}.{sys.version_info.minor}"
-        message = f"Hello world! From Uvicorn with Gunicorn. Using Python {version}".encode(
-            "utf-8"
-        )
-        await send({"type": "http.response.body", "body": message})
+app = FastAPI()
 
 
-app = App
+@app.get("/")
+async def read_root():
+    message = f"Hello world! From FastAPI running on Uvicorn with Gunicorn. Using Python {version}"
+    return {"message": message}
